@@ -1,0 +1,180 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>9-"A" sinf</title>
+        <!-- Bootstrap CSS -->
+
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+        <link href="https://fonts.googleapis.com/css2?family=Akaya+Kanadaka&family=Poppins:wght@200&display=swap"rel="stylesheet"> <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <link rel="stylesheet" href="{% static 'fontawesome-free/css/all.min.css' %}">
+            
+        <style>
+            body{
+                background-color: #dbdbdb;
+            }
+
+            svg{
+                width: 3%;
+            }
+
+            #username_top{
+                margin-top: 5px;
+                font-size: 30px;
+                padding-left: 20px;
+            }
+              
+            .darker {
+                border-color: #ccc;
+                background-color: #ddd;
+            }
+        
+            .container::after {
+                content: "";
+                clear: both;
+                display: table;
+            }
+        
+            .time-right {
+                float: right;
+                color: #aaa;
+            }
+            
+            .time-left {
+                float: left;
+                color: #999;
+            }
+            h5{
+                text-align: center;
+                font-size: 12px;
+            }
+
+            h6{
+                text-align: center;
+                font-size: 10px;
+            }
+                
+            nav{
+                font-family: 'Akaya Kanadaka', cursive;
+            }
+
+            .navbar {
+                position: fixed;
+                z-index: 1;
+                width: 100%;
+            }
+                
+            #post-form{
+                font-family: 'Poppins', sans-serif;
+            }
+                
+            h5{
+                text-align: center;
+                font-size: 12px;
+                font-family: 'Poppins', sans-serif;
+            }
+                
+            h6{
+                text-align: center;
+                font-size: 10px;
+                font-family: 'Poppins', sans-serif;
+            }
+                
+            .button{
+                color: white;
+                border-radius: 35px;
+                width: 100px;
+            }
+                
+            .button:hover{
+                background-color:  rgb(0, 140, 255);
+                color: white;
+                border-radius: 2px;
+            }
+        </style>
+    </head>
+    
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container-fluid">
+                {% if user.profile_pic %}
+                    <img src="{{ user.profile_pic.url }}" alt="" style="width: 50px; height: 50px; border-radius: 50%;">    
+                {% else %}
+                    <img src="{% static 'images/non-image.jpg' %}" alt="" style="width: 50px; height: 50px; border-radius: 50%; float: left;">
+                {% endif %}
+                    
+                <a class="navbar-brand" href="{% url 'home' %}">{{ user.username }}</a>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    
+                    {% if user.is_authenticated %}
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li class="nav-item dropdown"> 
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Sinf Haqida</a>
+                                
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <li><a class="dropdown-item" href="{% url 'pupil_list' %}">O'quchilar</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'olimp_list' %}">Musobaqalar</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="{% url 'youtube_video' %}">Videolar</a></li>
+                                </ul>   
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="https://www.youtube.com/channel/UCyEV-nhBLMXX562XuHwYM2Q/videos" tabindex="-1" aria-disabled="true" target="_blank">You Tube</a>
+                            </li>
+                                
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'chat-home' %}">Chat</a>
+                            </li>
+
+                            <li class="nav-item dropdown"> 
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Hisobim</a>
+                                
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <li><a class="dropdown-item" href="{% url 'settings' %}">Kabinet</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'password_change' %}">Boshqa Parol</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="{% url 'logout' %}">Chiqish</a></li>
+                                </ul>    
+                            </li>
+                            
+                            
+                        </ul>
+                                                        
+                        <form class="d-flex">
+                            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                            <button class="button" type="submit" style="background: rgb(0, 174, 255);">Search</button>
+                        </form>
+
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'login' %}" style="color: #ffff;">Kirish</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'signup' %}" style="color: #ffff;">Ro'yxatdan O'tish</a>
+                          </li>
+                    {% endif %}
+                </div>
+            </div>
+        </nav>
+            
+        <!-- Optional JavaScript; choose one of the two! -->
+        <!-- Option 1: Bootstrap Bundle with Popper -->
+
+        <!-- JavaScript Bundle with Popper -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+
+
+    {% block content %}
+    {% endblock content %}
+    </body>
+</html>

@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load social_share %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+    <style>
+        a {
+            text-decoration: none;
+            color: #000;
+        }
+        
+        a:hover {
+            color: #000;
+        }
+        .send-post {
+            width: 200px;
+        }
+        
+        .icon-img {
+            width: 30px;
+            height: 30px;
+        }
+    </style>
+
+    <link rel="stylesheet" href="{% static 'css/comment.css' %}">
+    {% if user.is_authenticated %}
+        <center>
+            <h1>{{ object.nomi }}</h1>
+
+            {% if object.rasmi %}
+                <img src="{{ object.rasmi.url }}" alt="">
+            {% endif %}
+    
+        </center>
+
+        <!-- Text -->
+            <p style="position: relative; right: auto;">{{ object.sharti|safe }}</p>
+        <!-- END Text -->
+
+        <center>
+            {% if object.videofile %}
+                <h1>{{ object.name }}</h1>
+                <video width='800' controls>
+                    <source src='{{ object.videofile.url }}' type='video/mp4'>
+                    Your browser does not support the video tag.
+                </video>
+            {% endif %}
+            <br><br>
+            <a href="{% url 'olimp_list' %}" class="btn btn-primary">Ortga qaytish</a>
+
+            {% if user.is_superuser %}
+                <a href="{% url 'olimp_edit' object.pk %}" class="btn btn-warning">Tahrirlash</a>
+                <a href="{% url 'olimp_delete' object.pk %}" class="btn btn-danger">O'chirish</a>
+            {% endif %}
+            
+            <div class="container">
+                <br>
+                <button class="btn btn-light send-post">{% post_to_facebook object_or_url "Post to Facebook!" %}<img src="{% static 'icons/facebook-brands.svg' %}" alt="" class="icon-img"></button>
+                <button class="btn btn-light send-post">{% post_to_telegram '{{ object.nomi }}' object_or_url '' %}<img src="{% static 'icons/telegram-brands.svg' %}" alt="" class="icon-img"></button>
+            </div>
+
+            <br><br>
+            <!-- COMMENTS  -->
+            <h2>O'z fikringizni yoki savollaringizni qoldiring</h2>
+            
+            <div id="comments_section">
+                <!-- Add to comment -->
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        {{ comment_form }}
+                        <button class="btn btn-info" type="submit">Izoh qo'shish</button>
+                    </div>
+                </form>
+
+                <!-- End add to comment -->
+                <hr>
+                
+                <!-- All comments -->
+                <ul class="comment">
+                    <h1>Izohlar</h1>
+                    {% for comment in comments %}
+                        <li>
+                            <div>
+                                <hr>
+                                <span>
+                                    {% if comment.author.profile_pic %}
+                                        <img src="{{ comment.author.profile_pic.url }}" alt="" class="comment-img">
+                                    {% else %}
+                                        <img src="{% static 'images/non-image.jpg' %}" alt="" class="comment-img">
+                                    {% endif %}
+                                    <h3 class="text-info">{{ comment.author }}</h3>
+                                    <h4 class="text-muted">{{ comment.date_posted }}</h4>
+                                </span>
+                                <p class="comment-data">
+                                    {{ comment.content }}
+                                </p>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+
+                <!-- End all comments -->
+            </div>
+
+            <!-- End COMMENTS  -->
+        </center>
+    {% endif %}
+{% endblock content %}
